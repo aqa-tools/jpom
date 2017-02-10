@@ -1,5 +1,10 @@
 *.class
 
+# User-specific stuff
+.idea/
+target/
+pom.iml
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
