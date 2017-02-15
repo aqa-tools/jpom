@@ -1,4 +1,4 @@
-package com.aqatools;
+package com.aqatools.jpom;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
