@@ -8,7 +8,13 @@ import java.util.List;
 /**
  * Created by user on 10.02.17.
  */
-public class Container extends UI {
+public abstract class Container extends UI {
+
+    protected Container() {}
+
+    public Container(By locator) {
+        super(locator);
+    }
 
     public WebElement findElement(By locator) {
         return webElement().findElement(locator);

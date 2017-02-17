@@ -1,28 +1,33 @@
 package com.aqatools.jpom;
 
+import com.aqatools.jpom.ui.Container;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 /**
  * Created by schipiga on 15.02.17.
  */
-public abstract class Page {
+public abstract class Page<T> extends Container {
 
-    protected static final String URL = null;
+    protected String URL;
 
     protected WeakReference<App> app;
     protected WebDriver webDriver;
-    protected WebElement webElement;
 
-    public Page() { super(); }
+    public Page() {}
 
-    public Page(App app) {
+    public T init(App app) {
         this.app = new WeakReference<>(app);
         webDriver = app.getWebDriver();
-        webElement = webDriver.findElement(By.tagName("html"));
+        return (T)this;
+    }
+
+    public void setApp(App app) {
+        this.app = new WeakReference<>(app);
     }
 
     public void refresh() {
@@ -39,5 +44,13 @@ public abstract class Page {
 
     public void back() {
         webDriver.navigate().back();
+    }
+
+    public WebElement findElement(By locator) {
+        return webDriver.findElement(locator);
+    }
+
+    public List<WebElement> findElements(By locator) {
+        return webDriver.findElements(locator);
     }
 }

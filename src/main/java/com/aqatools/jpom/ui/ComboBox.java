@@ -1,5 +1,6 @@
 package com.aqatools.jpom.ui;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
@@ -10,6 +11,10 @@ import java.util.List;
  * Created by user on 10.02.17.
  */
 public class ComboBox extends UI {
+
+    public ComboBox(By locator) {
+        super(locator);
+    }
 
     @Override
     public String getValue() {

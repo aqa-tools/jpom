@@ -12,13 +12,19 @@ public abstract class UI {
 
     protected By locator;
     protected Container container;
-    protected Integer index;
+    protected Integer index = null;
 
     protected UI() {}
 
-    public UI(By locator, Integer index, Container container) {
+    public UI(By locator) {
         this.locator = locator;
+    }
+
+    public void setIndex(int index) {
         this.index = index;
+    }
+
+    public void setContainer(Container container) {
         this.container = container;
     }
 

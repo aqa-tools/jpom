@@ -5,10 +5,11 @@ package com.aqatools.jpom;
  */
 public class TestApp extends App {
 
-    Page testPage;
+    public TestPage testPage = new TestPage();
 
     public TestApp(String url, String browser) {
         super(url, browser);
-        testPage = new TestPage(this);
+        webDriver.manage().window().maximize();
+        initFields();
     }
 }
