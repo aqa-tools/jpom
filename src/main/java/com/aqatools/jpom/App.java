@@ -26,17 +26,18 @@ public abstract class App
 //        if (browser.equals("firefox"))
 //            FirefoxDriverManager.getInstance().setup();
 //            webDriver = new FirefoxDriver();
-        if (browser.equals("chrome"))
+        if (browser.equals("chrome")) {
             ChromeDriverManager.getInstance().setup();
             webDriver = new ChromeDriver();
+        }
     }
 
-    public void initFields() {
+    public void initPages() {
         Class cls = this.getClass();
         for (Field f: cls.getDeclaredFields()) {
             try {
                 Page p = (Page) f.get(this);
-                p.init(this);
+                p.setApp(this);
             } catch (IllegalAccessException e) {
                 System.out.println(e);
             }

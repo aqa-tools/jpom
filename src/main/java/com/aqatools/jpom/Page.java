@@ -1,17 +1,19 @@
 package com.aqatools.jpom;
 
 import com.aqatools.jpom.ui.Container;
+import com.aqatools.jpom.ui.UI;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
  * Created by schipiga on 15.02.17.
  */
-public abstract class Page<T> extends Container {
+public abstract class Page extends Container {
 
     protected String URL;
 
@@ -20,14 +22,9 @@ public abstract class Page<T> extends Container {
 
     public Page() {}
 
-    public T init(App app) {
-        this.app = new WeakReference<>(app);
-        webDriver = app.getWebDriver();
-        return (T)this;
-    }
-
     public void setApp(App app) {
         this.app = new WeakReference<>(app);
+        webDriver = app.getWebDriver();
     }
 
     public void refresh() {
