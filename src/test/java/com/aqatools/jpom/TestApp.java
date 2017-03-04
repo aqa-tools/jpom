@@ -6,6 +6,7 @@ package com.aqatools.jpom;
 public final class TestApp extends App {
 
     public TestPage testPage = new TestPage();
+    public ResultPage resultPage = new ResultPage();
 
     public TestApp(String url, String browser) {
         super(url, browser);

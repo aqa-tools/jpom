@@ -1,6 +1,8 @@
 package com.aqatools.jpom;
 
 import com.aqatools.jpom.ui.Block;
+import com.aqatools.jpom.ui.Button;
+import com.aqatools.jpom.ui.TextField;
 import org.openqa.selenium.By;
 
 /**
@@ -8,7 +10,8 @@ import org.openqa.selenium.By;
  */
 public class BlockSearch extends Block {
 
-    public BlockSearch blockSearch = new BlockSearch(By.className("home-arrow__search-wrapper"));
+    public Button buttonFind = new Button(By.cssSelector("button.button_theme_websearch"));
+    public TextField fieldQuery = new TextField(By.name("text"));
 
     public BlockSearch(By locator) {
         super(locator);

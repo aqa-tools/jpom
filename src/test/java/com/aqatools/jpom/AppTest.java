@@ -20,11 +20,11 @@ public class AppTest {
     }
 
     @Test
-    public void startApplication() throws InterruptedException {
+    public void startApplication() {
         app.testPage.open();
-        app.testPage.fieldQuery.setValue("yandex");
-        app.testPage.buttonFind.click();
-        TimeUnit.SECONDS.sleep(2);
+        app.testPage.blockSearch.fieldQuery.setValue("yandex");
+        app.testPage.blockSearch.buttonFind.click();
+        app.resultPage.blockResult.waitForPresence(null);
     }
 
     @After

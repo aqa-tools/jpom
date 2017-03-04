@@ -43,6 +43,10 @@ public abstract class Page extends Container {
         webDriver.navigate().back();
     }
 
+    public String getTitle() {
+        return webDriver.getTitle();
+    }
+
     public WebElement findElement(By locator) {
         return webDriver.findElement(locator);
     }

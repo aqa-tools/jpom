@@ -7,7 +7,7 @@ public class Utils {
 
     public static boolean wait(Runner run, int timeout) {
         boolean result;
-        long limit = System.currentTimeMillis() + timeout;
+        long limit = System.currentTimeMillis() + timeout * 1000;
         do {
             result = run.exec();
             if (result)
