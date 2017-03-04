@@ -15,7 +15,7 @@ import java.util.List;
  */
 public abstract class Page extends Container {
 
-    protected String URL;
+    public String URL;
 
     protected WeakReference<App> app;
     protected WebDriver webDriver;
