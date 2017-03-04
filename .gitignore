@@ -3,7 +3,7 @@
 # User-specific stuff
 .idea/
 target/
-pom.iml
+*.iml
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
