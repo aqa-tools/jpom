@@ -12,6 +12,7 @@ public class TextField extends UI {
     }
 
     public String getValue() {
+        waitForPresence(null);
         String text = webElement().getText();
         if (text == null || text.equals(""))
             text = webElement().getAttribute("value");
@@ -19,6 +20,7 @@ public class TextField extends UI {
     }
 
     public void setValue(String value) {
+        waitForPresence(null);
         webElement().clear();
         webElement().sendKeys(value);
     }

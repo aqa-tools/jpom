@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.lang.reflect.Field;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Hello world!
@@ -30,6 +31,8 @@ public abstract class App
             ChromeDriverManager.getInstance().setup();
             webDriver = new ChromeDriver();
         }
+        webDriver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
     }
 
     public void initPages() {

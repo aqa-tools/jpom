@@ -22,10 +22,9 @@ public class AppTest {
     @Test
     public void startApplication() throws InterruptedException {
         app.testPage.open();
-        TimeUnit.SECONDS.sleep(3);
         app.testPage.fieldQuery.setValue("yandex");
         app.testPage.buttonFind.click();
-        TimeUnit.SECONDS.sleep(3);
+        TimeUnit.SECONDS.sleep(2);
     }
 
     @After
