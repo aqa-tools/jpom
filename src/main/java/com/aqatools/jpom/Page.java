@@ -1,13 +1,11 @@
 package com.aqatools.jpom;
 
 import com.aqatools.jpom.ui.Container;
-import com.aqatools.jpom.ui.UI;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -19,12 +17,19 @@ public abstract class Page extends Container {
 
     protected WeakReference<App> app;
     protected WebDriver webDriver;
+    protected By locator = By.tagName("html");
 
     public Page() {}
 
     public void setApp(App app) {
         this.app = new WeakReference<>(app);
         webDriver = app.getWebDriver();
+    }
+
+    public WebDriver getWebDriver() {
+        if (webDriver == null)
+            throw new RuntimeException("Webdriver is not defined");
+        return webDriver;
     }
 
     public void refresh() {

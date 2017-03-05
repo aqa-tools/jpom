@@ -25,7 +25,7 @@ public class WebElementHandler implements InvocationHandler {
             webElement = webElement != null ? webElement : webElementGetter.get();
             return method.invoke(webElement, args);
         } catch (NoSuchElementException | StaleElementReferenceException e) {
-            WebElement webElement = webElementGetter.get();
+            webElement = webElementGetter.get();
             return method.invoke(webElement, args);
         }
     }
