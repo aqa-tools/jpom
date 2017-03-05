@@ -2,10 +2,14 @@ package com.aqatools.jpom.ui;
 
 import com.aqatools.jpom.Runner;
 import com.aqatools.jpom.Utils;
+import com.aqatools.jpom.ui.proxy.WebElementHandler;
+import com.aqatools.jpom.ui.proxy.WebElementGetter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
+
+import java.lang.reflect.Proxy;
 
 /**
  * Created by user on 10.02.17.
@@ -17,6 +21,7 @@ public abstract class UI {
     protected By locator;
     protected Container container;
     protected Integer index = null;
+    protected WebElement cachedWebElement;
 
     protected UI() {}
 
@@ -80,9 +85,29 @@ public abstract class UI {
     }
 
     protected WebElement webElement() {
-        if (index == null)
-            return container.findElement(locator);
-        else
-            return container.findElements(locator).get(index);
+        if (cachedWebElement != null)
+            return cachedWebElement;
+
+        WebElementGetter webElementGetter;
+        if (index == null) {
+            webElementGetter = new WebElementGetter() {
+                public WebElement get() {
+                    return container.findElement(locator);
+                }
+            };
+        }
+        else {
+            webElementGetter = new WebElementGetter() {
+                public WebElement get() {
+                    return container.findElements(locator).get(index);
+                }
+            };
+        }
+
+        cachedWebElement = (WebElement) Proxy.newProxyInstance(
+                WebElement.class.getClassLoader(),
+                new Class[] { WebElement.class },
+                new WebElementHandler(webElementGetter));
+        return cachedWebElement;
     }
 }
