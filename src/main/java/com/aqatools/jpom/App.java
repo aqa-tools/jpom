@@ -7,6 +7,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.lang.reflect.Field;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Hello world!
@@ -23,20 +25,24 @@ public abstract class App
 
         appUrl = url.replaceAll("/+$", "");
 
-//        if (browser.equals("firefox"))
-//            FirefoxDriverManager.getInstance().setup();
-//            webDriver = new FirefoxDriver();
-        if (browser.equals("chrome"))
+        if (browser.equals("firefox")) {
+            FirefoxDriverManager.getInstance().setup();
+            webDriver = new FirefoxDriver();
+        }
+        if (browser.equals("chrome")) {
             ChromeDriverManager.getInstance().setup();
             webDriver = new ChromeDriver();
+        }
+        webDriver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
     }
 
-    public void initFields() {
+    public void initPages() {
         Class cls = this.getClass();
         for (Field f: cls.getDeclaredFields()) {
             try {
                 Page p = (Page) f.get(this);
-                p.init(this);
+                p.setApp(this);
             } catch (IllegalAccessException e) {
                 System.out.println(e);
             }
@@ -55,8 +61,35 @@ public abstract class App
         return webDriver;
     }
 
-//    public Page getCurrentPage() {
-//        String currentUrl = webDriver.getCurrentUrl();
-//        return Page();
-//    }
+    public Page getCurrentPage() {
+        String currentUrl = webDriver.getCurrentUrl();
+
+        Map<String, Page> pages = new HashMap<>();
+
+        Class c = this.getClass();
+        for (Field f : c.getDeclaredFields()) {
+            try {
+                Page p = (Page) f.get(this);
+                pages.put(p.URL, p);
+                pages.put("he", p);
+            } catch (IllegalAccessException e) {
+                continue;
+            }
+        }
+        Object[] keys = pages.keySet().toArray();
+        Arrays.sort(keys, new java.util.Comparator<Object>() {
+            @Override
+            public int compare(Object s1, Object s2) {
+                // TODO: Argument validation (nullity, length)
+                return ((String) s2).length() - ((String) s1).length();// comparision
+            }
+        });
+
+        for(Object key: keys) {
+            String url = (String) key;
+            if (currentUrl.contains(url))
+                return pages.get(url);
+        }
+        return null;
+    }
 }

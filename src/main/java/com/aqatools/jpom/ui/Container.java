@@ -3,6 +3,7 @@ package com.aqatools.jpom.ui;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -14,6 +15,18 @@ public abstract class Container extends UI {
 
     public Container(By locator) {
         super(locator);
+    }
+
+    public void initUI() {
+        Class cls = this.getClass();
+        for (Field f: cls.getDeclaredFields()) {
+            try {
+                UI ui = (UI) f.get(this);
+                ui.setContainer(this);
+            } catch (IllegalAccessException e) {
+                System.out.println(e);
+            }
+        }
     }
 
     public WebElement findElement(By locator) {
