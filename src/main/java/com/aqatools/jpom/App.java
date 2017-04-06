@@ -71,17 +71,16 @@ public abstract class App
             try {
                 Page p = (Page) f.get(this);
                 pages.put(p.URL, p);
-                pages.put("he", p);
             } catch (IllegalAccessException e) {
                 continue;
             }
         }
         Object[] keys = pages.keySet().toArray();
         Arrays.sort(keys, new java.util.Comparator<Object>() {
+
             @Override
             public int compare(Object s1, Object s2) {
-                // TODO: Argument validation (nullity, length)
-                return ((String) s2).length() - ((String) s1).length();// comparision
+                return ((String) s2).length() - ((String) s1).length();
             }
         });
 
