@@ -16,15 +16,16 @@ public class AppTest {
 
     @Before
     public void SetUp() {
-        app = new TestApp("https://yandex.ru", "chrome");
+        app = new TestApp("https://yandex.ru", "firefox");
     }
 
     @Test
-    public void startApplication() throws InterruptedException {
+    public void startApplication() {
         app.testPage.open();
-        TimeUnit.SECONDS.sleep(3);
-        app.testPage.button.click();
-        TimeUnit.SECONDS.sleep(3);
+        app.testPage.blockSearch.fieldQuery.setValue("yandex");
+        app.testPage.blockSearch.buttonFind.click();
+        app.resultPage.blockResult.waitForPresence(null);
+        System.out.println(app.getCurrentPage());
     }
 
     @After
