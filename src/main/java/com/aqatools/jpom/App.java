@@ -2,52 +2,53 @@ package com.aqatools.jpom;
 
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.FirefoxDriverManager;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Hello world!
- *
  */
-public abstract class App
-{
-    protected String appUrl;
-    protected WebDriver webDriver;
+public abstract class App {
+    private String appUrl;
+    private WebDriver webDriver;
 
-    public App() {}
-
-    public App(String url, String browser) {
-
+    public App(final String url, final String browser) {
+        if (StringUtils.isBlank(url)) {
+            throw new IllegalArgumentException("URL should not be null");
+        }
+        if (StringUtils.isBlank(browser)) {
+            throw new IllegalArgumentException("Browser parameter should not be null");
+        }
         appUrl = url.replaceAll("/+$", "");
 
-        if (browser.equals("firefox")) {
-            FirefoxDriverManager.getInstance().setup();
-            webDriver = new FirefoxDriver();
-        }
-        if (browser.equals("chrome")) {
-            ChromeDriverManager.getInstance().setup();
-            webDriver = new ChromeDriver();
+        final String browserLower = browser.toLowerCase();
+        switch (browserLower) {
+            case "firefox":
+                FirefoxDriverManager.getInstance().setup();
+                webDriver = new FirefoxDriver();
+                break;
+            case "chrome":
+                ChromeDriverManager.getInstance().setup();
+                webDriver = new ChromeDriver();
+                break;
+            default:
+                throw new IllegalArgumentException("Wrong browser name provided");
         }
         webDriver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
         webDriver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
     }
 
-    public void initPages() {
-        Class cls = this.getClass();
-        for (Field f: cls.getDeclaredFields()) {
-            try {
-                Page p = (Page) f.get(this);
-                p.setApp(this);
-            } catch (IllegalAccessException e) {
-                System.out.println(e);
-            }
-        }
-    }
+    public abstract void initPages();
+
+    public abstract List<Page> getAllPages();
 
     public void open(String url) {
         webDriver.get(appUrl + url);
@@ -62,33 +63,25 @@ public abstract class App
     }
 
     public Page getCurrentPage() {
-        String currentUrl = webDriver.getCurrentUrl();
+        final String currentUrl = webDriver.getCurrentUrl();
 
-        Map<String, Page> pages = new HashMap<>();
-
-        Class c = this.getClass();
-        for (Field f : c.getDeclaredFields()) {
-            try {
-                Page p = (Page) f.get(this);
-                pages.put(p.URL, p);
-            } catch (IllegalAccessException e) {
-                continue;
-            }
-        }
-        Object[] keys = pages.keySet().toArray();
-        Arrays.sort(keys, new java.util.Comparator<Object>() {
-
+        final Map<String, Page> pages = new TreeMap<>(new Comparator<String>() {
             @Override
-            public int compare(Object s1, Object s2) {
-                return ((String) s2).length() - ((String) s1).length();
+            public int compare(String s1, String s2) {
+                return s2.length() - s1.length();
             }
         });
 
-        for(Object key: keys) {
-            String url = (String) key;
-            if (currentUrl.contains(url))
-                return pages.get(url);
+        for (Page page : getAllPages()) {
+            pages.put(page.getURL(), page);
         }
-        return null;
+
+        for (String url : pages.keySet()) {
+            if (currentUrl.contains(url)) {
+                return pages.get(url);
+            }
+        }
+        throw new UnsupportedOperationException("URL not found");
     }
+
 }

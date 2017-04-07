@@ -11,7 +11,7 @@ public class ResultPage extends Page {
     public Block blockResult = new Block(By.className("serp-list"));
 
     public ResultPage() {
-        URL = "/search";
+        setURL("/search");
         initUI();
     }
 }

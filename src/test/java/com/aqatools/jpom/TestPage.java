@@ -10,7 +10,7 @@ public final class TestPage extends Page {
     public BlockSearch blockSearch = new BlockSearch(By.className("home-arrow__search-wrapper"));
 
     public TestPage() {
-        URL = "/";
+        setURL("/");
         initUI();
     }
 }

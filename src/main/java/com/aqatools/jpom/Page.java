@@ -5,7 +5,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
@@ -13,22 +12,24 @@ import java.util.List;
  */
 public abstract class Page extends Container {
 
-    public String URL;
+    private String URL;
 
-    protected WeakReference<App> app;
+    protected App app;
     protected WebDriver webDriver;
     protected By locator = By.tagName("html");
 
-    public Page() {}
+    public Page() {
+    }
 
-    public void setApp(App app) {
-        this.app = new WeakReference<>(app);
-        webDriver = app.getWebDriver();
+    public void setApp(final App app) {
+        this.app = app;
+        this.webDriver = app.getWebDriver();
     }
 
     public WebDriver getWebDriver() {
-        if (webDriver == null)
+        if (webDriver == null) {
             throw new RuntimeException("Webdriver is not defined");
+        }
         return webDriver;
     }
 
@@ -37,7 +38,7 @@ public abstract class Page extends Container {
     }
 
     public void open() {
-        app.get().open(URL);
+        app.open(URL);
     }
 
     public void forward() {
@@ -58,5 +59,13 @@ public abstract class Page extends Container {
 
     public List<WebElement> findElements(By locator) {
         return webDriver.findElements(locator);
+    }
+
+    public String getURL() {
+        return URL;
+    }
+
+    public void setURL(String URL) {
+        this.URL = URL;
     }
 }

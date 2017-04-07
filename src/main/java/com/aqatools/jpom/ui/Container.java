@@ -18,6 +18,7 @@ public abstract class Container extends UI {
     }
 
     public void initUI() {
+        //TODO: remove reflection
         Class cls = this.getClass();
         for (Field f: cls.getDeclaredFields()) {
             try {

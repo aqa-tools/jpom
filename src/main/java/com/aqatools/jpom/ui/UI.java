@@ -73,7 +73,7 @@ public abstract class UI {
     }
 
     public void waitForAbsence(Integer timeout) {
-        UI that = this;
+        final UI that = this;
         timeout = timeout != null ? timeout : TIMEOUT;
         boolean isOk = Utils.wait(new Runner() {
             public boolean exec() {

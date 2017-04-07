@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class AppTest {
 
-    TestApp app;
+    private TestApp app;
 
     @Before
     public void SetUp() {
@@ -21,10 +21,10 @@ public class AppTest {
 
     @Test
     public void startApplication() {
-        app.testPage.open();
-        app.testPage.blockSearch.fieldQuery.setValue("yandex");
-        app.testPage.blockSearch.buttonFind.click();
-        app.resultPage.blockResult.waitForPresence(null);
+        app.getTestPage().open();
+        app.getTestPage().blockSearch.fieldQuery.setValue("yandex");
+        app.getTestPage().blockSearch.buttonFind.click();
+        app.getResultPage().blockResult.waitForPresence(null);
         System.out.println(app.getCurrentPage());
     }
 
